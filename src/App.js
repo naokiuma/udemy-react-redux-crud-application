@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 
 //propsは関数に渡せる値。関数側で引数にする。
@@ -33,5 +34,11 @@ User.defaultProps = {
   age:1
 }
 
+//"これを追加すれば、userのnameはstringしか受け付けない。
+//バリデーションみたいなもの"
+User.propTypes ={
+  name:PropTypes.string,
+  age:PropTypes.number.isRequired
+}
 
 export default App;
