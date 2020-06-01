@@ -4,14 +4,14 @@ export const DECREMENT = 'DECREMENT'
 
 
 //それぞれアクションクリエイター
-const increment = () => {
-    return{
+export const increment = () => ({
         //アクション
         type:INCREMENT
-    }
-}
+})
 
-const decrement = () => ({
+export const decrement = () => ({
     //こんな感じでリターンを外すこともできる
         type:DECREMENT
 })
+
+

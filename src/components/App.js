@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
+//コネクト関数を追加
+import { connect } from 'react-redux'
+import { increment, decrement } from '../actions'
 
 
 //propsは関数に渡せる値。stateはコンポーネントで持っている値。関数側で引数にする。
-const App = () => (<Counter></Counter>)
-
-
-//関数コンポーネント。クラスでの書き方
-class Counter extends Component {
-  constructor(props){//インスタンス初期化時に動く。propsを受け取れる。
-    super(props)
+//const App = () => (<Counter></Counter>)
+//消す！代わりに、したのcounterをAppに変更。
+//ここ。
+class App extends Component {
+  //
+  //下記の処理は、レデューサーで行うのでいらない。
+  //constructor(props){//インスタンス初期化時に動く。propsを受け取れる。
+  //  super(props)
     //console.log(this.state)
-    this.state = { count:0 }
-  }
+   // this.state = { count:0 }
+  //}
 
+  /*この処理もアクションクリエイターで実施するので削除
   handlePlusButton = () =>{
     console.log("プラス");
     //stateをかえるには、必ずsetStateを使うこと。
@@ -26,19 +31,28 @@ class Counter extends Component {
     //setstateと同時にrenderが実施される。
     this.setState({count:this.state.count - 1})
   }
+  */
+
+  //counterには、レデューサーのカウンター内のオブジェクトの値。
 
   render(){
-  return(
-  <React.Fragment>
-  <div>counter:{this.state.count}</div>
-  <button onClick={this.handlePlusButton}> +1</button>
-  <button onClick={this.handleMinusButton}> -1</button>
-  </React.Fragment>
-
- 
-  )
-
+    const props = this.props
+      return(
+      <React.Fragment>
+        <div>counter:{props.value}</div>
+        <button onClick={props.increment}> +1</button>
+        <button onClick={props.decrement}> -1</button>
+      </React.Fragment>
+    )
   }
 }
 
-export default App;
+//mapStateToPropsは、stateの情報から、componentに必要な情報を受け渡す
+const mapStateToProps = state => ({ value:state.count.value})
+//アクションが実行された時に、レデューサーにtypeを渡すのがディスパッチ
+const mapDispatchToProps = dispatch => ({
+  increment: () => dispatch(increment()),
+  decrement: () => dispatch(decrement())
+})
+export default connect(mapStateToProps,mapDispatchToProps)(App)
+
