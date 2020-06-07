@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import './index.css';
 import reducer from './reducers';
 //見通しを良くするために
-import App from './components/App';
+import EventsIndex from './components/events_index';
 import registerServiceWorker from './registerServiceWorker';
 
 //ここで作られるstoreはアプリ内の唯一のものになる
@@ -19,7 +19,7 @@ const store = createStore(reducer)
 
 ReactDOM.render(
 <Provider store={store}>
-    <App />
+    <EventsIndex />
 </Provider>,
  document.getElementById('root')
 );

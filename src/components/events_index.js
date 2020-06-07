@@ -8,7 +8,9 @@ import { increment, decrement } from '../actions'
 //const App = () => (<Counter></Counter>)
 //消す！代わりに、したのcounterをAppに変更。
 //ここ。
-class App extends Component {
+class EventsIndex extends Component {
+  //コンポーネントがマウントされたときに呼ばれるメソッド
+  //componenteDidMount(){}
   //
   //下記の処理は、レデューサーで行うのでいらない。
   //constructor(props){//インスタンス初期化時に動く。propsを受け取れる。
@@ -34,9 +36,10 @@ class App extends Component {
   */
 
   //counterには、レデューサーのカウンター内のオブジェクトの値。
-
   render(){
     const props = this.props
+    console.log("this.propsの中身");
+    console.log(props);//ここにはオブジェクトが入ってる。
       return(
       <React.Fragment>
         <div>counter:{props.value}</div>
@@ -49,10 +52,15 @@ class App extends Component {
 
 //mapStateToPropsは、stateの情報から、componentに必要な情報を受け渡す
 const mapStateToProps = state => ({ value:state.count.value})
-//アクションが実行された時に、レデューサーにtypeを渡すのがディスパッチ
-const mapDispatchToProps = dispatch => ({
-  increment: () => dispatch(increment()),
-  decrement: () => dispatch(decrement())
-})
-export default connect(mapStateToProps,mapDispatchToProps)(App)
+//アクションが実行された時に、該当のアクションを渡し、状態遷移をさせるのがディスパッチ
+//const mapDispatchToProps = dispatch => ({
+//  increment: () => dispatch(increment()),
+//  decrement: () => dispatch(decrement())
+//})
+
+const mapDispatchToProps = ({ increment, decrement})
+
+//この記述でstoreと描写側がつながるらしい。
+export default connect(mapStateToProps,mapDispatchToProps)(EventsIndex)
+
 
