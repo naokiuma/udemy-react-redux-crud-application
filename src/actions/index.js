@@ -1,17 +1,12 @@
-//あとでレデューサーでも使うので、constしておく。
-export const INCREMENT = 'INCREMENT'
-export const DECREMENT = 'DECREMENT'
+import axios from 'axios'
+export const READ_EVENTS = 'READ_EVENTS'
+const ROOT_URL = 'https://udemy-utils.herokuapp.com/api/v1'
+const QUERYSTRING = '?token=token123'
 
-
-//それぞれアクションクリエイター
-export const increment = () => ({
-        //アクション
-        type:INCREMENT
-})
-
-export const decrement = () => ({
-    //こんな感じでリターンを外すこともできる
-        type:DECREMENT
-})
-
-
+//actionの代わりに関数を返せるようになる。さらに、関数の中でdispatchができる
+export const readEvents = () => async dispatch => {
+        const response = await axios.get(`${ROOT_URL}/events${QUERYSTRING}`)
+        //console.log("始めるよう");
+        //console.log(response)
+        dispatch({type: READ_EVENTS,response})
+}
