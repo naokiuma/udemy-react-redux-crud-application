@@ -16,6 +16,7 @@ export default(events = {}, action) => {
             //idをkeyに配列を作流、lodashの動作。_はlodashの変数で、上の方で読みこんるよ！
             //console.log(_.mapKeys(action.response.data,'id'))
             return _.mapKeys(action.response.data,'id') 
+            //return action.response.data
             //
             //Object { 2: {…}, 3: {…}, 4: {…}, 5: {…}, 6: {…}, 7: {…}, 8: {…}, 9: {…} }
         default:
