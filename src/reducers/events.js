@@ -1,5 +1,8 @@
 import _ from 'lodash'
-import { READ_EVENTS } from '../actions'
+import { 
+    READ_EVENTS,
+    DELETE_EVENT,
+ } from '../actions'
 
 //状態をオブジェクトの初期値を定義。
 //初期状態のオブジェクトを入れる変数名はinitialState
@@ -19,8 +22,11 @@ export default(events = {}, action) => {
             //return action.response.data
             //
             //Object { 2: {…}, 3: {…}, 4: {…}, 5: {…}, 6: {…}, 7: {…}, 8: {…}, 9: {…} }
+        case DELETE_EVENT:
+            delete events[action.id]
+            return events
         default:
-            return events //何もないオブジェクト
+            return events //何も起きてないオブジェクト
     }
 
 }
