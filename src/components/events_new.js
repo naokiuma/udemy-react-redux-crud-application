@@ -36,14 +36,15 @@ async onSubmit(values){
 }
 
   render(){
-    //renderが実行された時に渡ってくる関数
-    const { handleSubmit } = this.props
+    //renderが実行された時に渡ってくる関数。prinstineは何も入力していない状態を示す。
+    const { handleSubmit,pristine,submitting } = this.props
+    console.log(submitting)
     return(
     <form onSubmit={handleSubmit(this.onSubmit)}>
       <div><Field label="Title"  name="title" type="text" component={this.renderField} /> </div>
       <div><Field label="Body"  name="body" type="text" component={this.renderField} /> </div>
       <div>
-        <input type="submit" value="Submit" disable={false} />
+        <input type="submit" value="Submit" disable={pristine || pristine} />
         <Link to="/" >Cancel</Link>
       </div>
 
