@@ -15,6 +15,13 @@ class EventsShow extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.onDeleteClick = this.onDeleteClick.bind(this)
   }
+
+//レンダリングが完成したら、適時情報をapiからとってくれう
+componentDidMount(){
+  const { id } = this.props.match.params
+  if(id) this.props.getEvent(id)
+}
+
 //https://redux-form.com/7.3.0/docs/api/field.md/ redux-formのfieldを見る
   //下の方で使ってる。
   //toucehdは一回でもフォームに触った時のメタ情報。この情報を見て、エラーの文言を制御する
@@ -41,21 +48,22 @@ async onDeleteClick(){
 //外部のアクションで呼び出したアクションクリエイタのposteventで、historyに履歴を渡している
 async onSubmit(values){
   //上で読み込んでいるpostEventに値を渡す。
-  //await this.props.postEvent(values)
+  await this.props.putEvent(values)
   this.props.history.push('/')
 }
 
 
   render(){
-    //renderが実行された時に渡ってくる関数。prinstineは何も入力していない状態を示す。
-    const { handleSubmit,pristine,submitting } = this.props
-    console.log(submitting)
+    //renderが実行された時に渡ってくる関数。pristineは何も入力していない状態を示す。
+    //https://qiita.com/macotok/items/672541aa514e3c6c0e05
+    const { handleSubmit,pristine,submitting,invalid } = this.props
+    //console.log(submitting)
     return(
     <form onSubmit={handleSubmit(this.onSubmit)}>
       <div><Field label="Title"  name="title" type="text" component={this.renderField} /> </div>
       <div><Field label="Body"  name="body" type="text" component={this.renderField} /> </div>
       <div>
-        <input type="submit" value="Submit" disable={pristine || pristine} />
+        <input type="submit" value="Submit" disable={pristine || submitting || invalid} />
         <Link to="/" >Cancel</Link>
         <Link to="/" onClick={this.onDeleteClick}>Delete</Link>
       </div>
@@ -75,11 +83,20 @@ const validate = values => {
   return errors
 }
 
+//レデューサーのイベントをbindする
+//ownProps はコンポーネントが持っているprops、さっき渡ってきたid情報がここにある。
+const mapStateToProps = (state,ownProps) =>{
+  const event = state.events[ownProps.match.params.id]
+  return { initialValues: event,event }
+}
+const mapDispatchToProps = ({ deleteEvent,getEvent,putEvent })
 
-const mapDispatchToProps = ({ deleteEvent })
+
 //この記述でstoreと描写側がつながる。
 //postEventもここでこのコンポーネントに関連づくアクションだと指定する必要がある。
-export default connect(null,mapDispatchToProps)(
-  reduxForm({ validate, form : 'eventShowForm' })(EventsShow)
+export default connect(mapStateToProps,mapDispatchToProps)(
+  //enableReinitializeとは?
+  //https://redux-form.com/6.0.0-rc.4/docs/api/reduxform.md/
+  reduxForm({ validate, form : 'eventShowForm', enableReinitialize:true })(EventsShow)
 )
 
