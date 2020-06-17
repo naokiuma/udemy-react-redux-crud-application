@@ -12,6 +12,8 @@ import thunk from 'redux-thunk'
 import { BrowserRouter,Route,Switch } from 'react-router-dom'
 //devtools開発しやすいように
 import { composeWithDevTools } from 'redux-devtools-extension'
+//マテリアルuiをインポート
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import './index.css';
 import reducer from './reducers';
@@ -35,16 +37,18 @@ const store = createStore(reducer,enhancer)
 //ReactDOM.render(<App />, document.getElementById('root'));を変更
 //これはルーター。変数にする場合は「:id」とする。
 ReactDOM.render(
-<Provider store={store}>
-    <BrowserRouter>
-        <Switch>
-            <Route exact path="/events/new" component={EventsNew} />
-            <Route exact path="/events/:id" component={EventsShow} />         
-            <Route exact path="/" component={EventsIndex} />
-            <Route exact path="/events" component={EventsIndex} />
-        </Switch>
-    </BrowserRouter>
-</Provider>,
+<MuiThemeProvider>
+    <Provider store={store}>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/events/new" component={EventsNew} />
+                <Route exact path="/events/:id" component={EventsShow} />         
+                <Route exact path="/" component={EventsIndex} />
+                <Route exact path="/events" component={EventsIndex} />
+            </Switch>
+        </BrowserRouter>
+    </Provider>
+</MuiThemeProvider>,
  document.getElementById('root')
 );
 registerServiceWorker();

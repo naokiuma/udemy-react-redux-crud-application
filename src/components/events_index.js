@@ -6,6 +6,17 @@ import { readEvents } from '../actions'
 import _ from 'lodash'
 //リンクパーツを設定でいるよ
 import { Link } from 'react-router-dom'
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn
+}from 'material-ui/Table'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
+
 
 
 //propsは関数に渡せる値。stateはコンポーネントで持っている値。関数側で引数にする。
@@ -21,37 +32,50 @@ class EventsIndex extends Component {
 
   renderEvents(){
     return _.map(this.props.events, event =>(
-      <tr key={event.id}>
-        <td>{event.id}</td>
-        <td>
+      <TableRow key={event.id}>
+        <TableRowColumn>{event.id}</TableRowColumn>
+        <TableRowColumn>
           <Link to={`/events/${event.id}`}>
             {event.title}
           </Link>
-        </td>
-        <td>{event.body}</td>
-      </tr>
+        </TableRowColumn>
+        <TableRowColumn>{event.body}</TableRowColumn>
+      </TableRow>
     ))
   }
 
   //counterには、レデューサーのカウンター内のオブジェクトの値。
   render(){
+    const style = {
+      position:"fixed",
+      right:20,
+      bottom:20
+    }
     //console.log("this.propsの中身");
     //console.log(props);//ここにはオブジェクトが入ってる。
       return(
         <React.Fragment>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Body</th>
-            </tr>
-          </thead>
-          <tbody>
+        <FloatingActionButton style={style} containerElement={<Link to="/events/new"/>}>
+          <ContentAdd />
+        </FloatingActionButton>
+        <Table>
+          <TableHeader
+          //全選択のチェックボックスを外す
+          displaySelectAll={ false }
+          //全選択のチェックボックス分、ずれている内容を直す
+          adjustForCheckbox={false}
+          >
+            <TableRow>
+              <TableHeaderColumn>ID</TableHeaderColumn>
+              <TableHeaderColumn>Title</TableHeaderColumn>
+              <TableHeaderColumn>Body</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
             {this.renderEvents()}
-          </tbody>
-        </table>
-        <Link to="/events/new">New Event</Link>
+          </TableBody>
+        </Table>
+        
         </React.Fragment>
 
     )
